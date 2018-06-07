@@ -1,6 +1,7 @@
 .metadata
 bin/
 tmp/
+*.DS_Store
 *.tmp
 *.bak
 *.swp
