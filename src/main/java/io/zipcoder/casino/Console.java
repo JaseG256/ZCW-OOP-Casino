@@ -11,10 +11,12 @@ public class Console {
         return Integer.toString(num);
     }
 
+
+
     public static String askForInput(String thingToAsk) {
         System.out.println(thingToAsk);
         Scanner scan = new Scanner(System.in);
-        return scan.nextLine();
+        return scan.nextLine().toLowerCase();
     }
 
     public static String output(String output) {
