@@ -9,7 +9,8 @@ public class BlackJack extends CardGames {
     Player player;
 
     public void start() {
-        playingBj = true;
+        playingBJ = true;
+
     }
 
     public BlackJack(Player player) {
@@ -18,9 +19,7 @@ public class BlackJack extends CardGames {
 
 
 
-while(playingBJ ==true)
-
-    {
+while(playingBJ == true){
         Console.output("Welcome to BlackJack " + player.name + ". I am your dealer Vince and I am here to take your money!");
         currentBet = Console.numberFromString(Console.askForInput("How much would you like to bet?"));
         deck.deal();
