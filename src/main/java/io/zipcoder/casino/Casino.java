@@ -18,12 +18,14 @@ public class Casino {
             System.out.println(choice);
 
             if (choice.equalsIgnoreCase("1")) {
+                BlackJack blackjack = new BlackJack();
+                blackjack.start();
 
             }
         } while (false);
 
         }
- //   }
+
 
     public static void main(String[] args) {
 

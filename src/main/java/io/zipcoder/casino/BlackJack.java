@@ -1,6 +1,6 @@
 package io.zipcoder.casino;
 
-public class BlackJack extends CardGames {
+public class BlackJack extends CardGame {
     int playerHand;
     int dealerHand;
     int currentBet;
