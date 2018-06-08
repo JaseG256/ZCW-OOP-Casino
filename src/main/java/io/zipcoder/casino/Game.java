@@ -2,7 +2,7 @@ package io.zipcoder.casino;
 
 public interface Game {
    // variable of Player type
-    Player player;
+   // Player player;
 
     void startGame();
 
