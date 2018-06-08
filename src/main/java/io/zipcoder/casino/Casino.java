@@ -27,15 +27,15 @@ public class Casino {
         }
 
 
-    public static void main(String[] args) {
-
-        CardDeck cardDeck = new CardDeck();
-        cardDeck.getDeck();
-        cardDeck.shuffle();
-        cardDeck.getDeck();
-        System.out.println(cardDeck.draw());
-        cardDeck.deal(2);
-        Casino cas = new Casino();
-        cas.startCasino();
-    }
+//    public static void main(String[] args) {
+//
+//        CardDeck cardDeck = new CardDeck();
+//        cardDeck.getDeck();
+//        cardDeck.shuffle();
+//        cardDeck.getDeck();
+//        System.out.println(cardDeck.draw());
+//        cardDeck.deal(2);
+//        Casino cas = new Casino();
+//        cas.startCasino();
+//    }
 }

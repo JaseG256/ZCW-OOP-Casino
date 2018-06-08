@@ -1,21 +1,24 @@
 package io.zipcoder.casino;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BlackJack {
     private ArrayList<Card> playerHand = new ArrayList<Card>();
     private ArrayList<Card> dealerHand = new ArrayList<Card>();
     private int currentBet;
     private boolean playingBJ = false;
+    private boolean playingHands = true;
+    private boolean askToPlayAgain = false;
     private CardDeck deck = new CardDeck();
     private Player player;
 
     public BlackJack() {
-        Player player = new Player("Eugene");
+        this.player = new Player("Eugene");
     }
 
     public void start() {
         playingBJ = true;
-
+        this.deck.shuffle();
     }
 
     private void dealToPlayerHand(int amountOfCards) {
@@ -30,8 +33,53 @@ public class BlackJack {
         }
     }
 
+    private void setPlayingHands(boolean bool) {
+        this.playingHands = bool;
+    }
+
+    private String getPlayerHand() {
+        return Arrays.toString(this.playerHand.toArray());
+    }
+
+    private String getDealerHand() {
+        return Arrays.toString(this.dealerHand.toArray());
+    }
+
+    private String showDealerHand() {
+        Card[] filteredArray = this.dealerHand.toArray(new Card[this.dealerHand.size()]);
+        filteredArray[0] = new Card();
+        return Arrays.toString(filteredArray);
+    }
+
+
+    private int getCurrentBet() {
+        return this.currentBet;
+    }
+
     private void setCurrentBet(int bet) {
         this.currentBet = bet;
+    }
+
+    private void setAskToPlayAgain(boolean bool) {
+        this.askToPlayAgain = bool;
+    }
+
+    private void resetHands() {
+        this.playerHand = new ArrayList<Card>();
+        this.dealerHand = new ArrayList<Card>();
+    }
+    private void startHands() {
+        this.deck = new CardDeck();
+        this.deck.shuffle();
+        resetHands();
+        dealToPlayerHand(2);
+        dealToDealerHand(2);
+    }
+
+    private void startNextHand() {
+        setCurrentBet(0);
+        setAskToPlayAgain(true);
+        setPlayingHands(false);
     }
 
     private int getCardValue(Card card) {
@@ -80,58 +128,94 @@ public class BlackJack {
     private int calcHand(ArrayList<Card> hand) {
         int totalScore = 0;
         for (int i = 0; i < hand.size(); i++) {
-            totalScore = getCardValue(hand.get(i));
+            totalScore += getCardValue(hand.get(i));
         }
         return totalScore;
     }
 
     public void startGame() {
-        while(playingBJ)
-        {
-            Console.output("Welcome to BlackJack " + player.getName() + ". I am your dealer Vince and I am here to take your money!");
-            int bet = Console.numberFromString(Console.askForInput("How much would you like to bet?"));
-            setCurrentBet(bet);
-            dealToPlayerHand(2);
-            dealToDealerHand(2);
-            if (calcHand(dealerHand) == 21) {
-                Console.output("Dealer has BlackJack! You lose!");
-                player.subtractFromBankroll(currentBet);
-                currentBet = 0;
-                deck.draw();
-            } else if (calcHand(playerHand) == 21) {
-                Console.output("You have BlackJack! You win!");
-                winBet((currentBet * 3) / 2);
-                currentBet = 0;
-                deck.deal();
-
-            }
-            while (calcHand(playerHand) < 21) {
-                String action = Console.askForInput("Dealer is showing: " + "You have " + playerHand + ". Please enter 'hit' or 'stay'.");
-                if (action.equals("hit")) {
-                    drawCard();
-                    cardValue += playerHand;
-                    if (calcHand(playerHand) > 21) {
-                        Console.output("You have " + playerHand + " and bust, you suck!");
-                        loseBet(currentBet);
-                        currentBet = 0;
-                    }
-                } else if (action.equals("stay")) {
-                    break;
+        start();
+        Console.output("Starting BlackJack...");
+        while (playingBJ) {
+            while (askToPlayAgain) {
+                String answer = Console.askForInput("Would you like to play again? (Y/N)");
+                if (answer.equals("y")) {
+                    setPlayingHands(true);
+                    setAskToPlayAgain(false);
+                } else {
+                    setPlayingHands(false);
+                    setAskToPlayAgain(false);
                 }
             }
-            while (calcHand(dealerHand) < 17 && calcHand(dealerHand) < 21) {
-                Console.output("Dealer has " + dealerHand + " and hits.");
-                drawcard();
-                cardValue += dealerHand;
-                if (calcHand(dealerHand > 21) {
-                    Console.output("Dealer has " + dealerHand + " and busts, you win!");
-                    winBet(currentBet);
-                    currentBet = 0;
-                } else if (dealerHand >= 17 && dealerHand < 21) {
-                    Console.output("Dealer has " + dealerHand + " and stands.");
+            while (playingHands) {
+                int bet = Console.numberFromString(Console.askForInput("Starting bet amount: "));
+                setCurrentBet(bet);
+                startHands();
+
+                Console.output(getPlayerHand());
+
+                if (calcHand(dealerHand) == 21) {
+                    Console.output("Dealer has BlackJack! You lose!");
+                    player.subtractFromBankroll(currentBet);
+                    startNextHand();
+                } else if (calcHand(playerHand) == 21) {
+                    Console.output("You have BlackJack! You win!");
+                    player.addToBankroll((currentBet * 3) / 2);
+                    startNextHand();
+                }
+
+                int stay = 0;
+                while ((calcHand(playerHand) <= 21 && calcHand(dealerHand) <= 21) && stay < 2) {
+                    System.out.println(stay);
+                    stay = 0;
+                    String action = Console.askForInput("Hit or Stay? (H/S)");
+
+                    if (action.equals("h")) {
+                        dealToPlayerHand(1);
+                    }
+
+                    if (action.equals("s")) {
+                        stay++;
+                    }
+
+                    if (calcHand(dealerHand) < 17) {
+                        dealToDealerHand(1);
+                    } else {
+                        stay++;
+                    }
+
+                    Console.output("Player Hand: " + getPlayerHand());
+                    Console.output("Dealer Hand: " + showDealerHand());
+                }
+
+                if (calcHand(playerHand) == calcHand(dealerHand)) {
+                    Console.output("It's a tie!");
+                    Console.output("Player Hand: " + getPlayerHand() + ", " + calcHand(playerHand));
+                    startNextHand();
+                } else if (calcHand(playerHand) > 21) {
+                    Console.output("Dealer wins! You bust.");
+                    Console.output("Player Hand: " + getPlayerHand() + ", " + calcHand(playerHand));
+                    startNextHand();
+                } else if (calcHand(dealerHand) > 21) {
+                    Console.output("You win! Dealer bust.");
+                    Console.output("Dealer Hand: " + getDealerHand() + ", " + calcHand(dealerHand));
+                    startNextHand();
+                } else if (calcHand(playerHand) > calcHand(dealerHand)) {
+                    Console.output("Player has higher hand.");
+                    Console.output("Player Hand: " + getPlayerHand() + ", " + calcHand(playerHand));
+                    startNextHand();
+                } else if (calcHand(dealerHand) > calcHand(playerHand)) {
+                    Console.output("Dealer has higher hand.");
+                    Console.output("Player Hand: " + getDealerHand() + ", " + calcHand(playerHand));
+                    startNextHand();
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+        BlackJack bj = new BlackJack();
+        bj.startGame();
     }
 }
 
