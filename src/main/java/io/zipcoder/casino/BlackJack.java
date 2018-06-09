@@ -1,6 +1,7 @@
 package io.zipcoder.casino;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class BlackJack {
     private ArrayList<Card> playerHand = new ArrayList<Card>();
@@ -10,7 +11,9 @@ public class BlackJack {
     private boolean playingHands = true;
     private boolean askToPlayAgain = false;
     private CardDeck deck = new CardDeck();
-    private Player player;
+    private static Player player;
+    static String name;
+    static String choice;
 
     public BlackJack() {
         this.player = new Player("Eugene");
@@ -166,7 +169,6 @@ public class BlackJack {
 
                 int stay = 0;
                 while ((calcHand(playerHand) <= 21 && calcHand(dealerHand) <= 21) && stay < 2) {
-                    System.out.println(stay);
                     stay = 0;
                     String action = Console.askForInput("Hit or Stay? (H/S)");
 
@@ -214,8 +216,23 @@ public class BlackJack {
     }
 
     public static void main(String[] args) {
-        BlackJack bj = new BlackJack();
-        bj.startGame();
+        System.out.println("Welcome to Eugene's Casino, where your money is OUR money!");
+        System.out.println("What's your name?");
+        Scanner scan = new Scanner(System.in);
+        Player play = new Player(name);
+       // player.setName(name);
+        System.out.println("Welcome " + name + "! Which game would you like to play?");
+        System.out.println("1: BlackJack");
+        System.out.println("2: Baccarat");
+        System.out.println("3: Craps");
+        choice = scan.nextLine();
+        if (choice.equalsIgnoreCase("1")) {
+            BlackJack bj = new BlackJack();
+            bj.startGame();
+        } else {
+            System.out.println("This game is not available. Please choose again");
+        }
+
     }
 }
 
