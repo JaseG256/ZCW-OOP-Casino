@@ -11,6 +11,11 @@ public class Player {
         bankroll = 1000;
     }
 
+    public Player() {
+        this.name = "Anonymous";
+        bankroll = 1000;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -37,6 +42,11 @@ public class Player {
 
     public int getScore() {
         return score;
+    }
+
+    @Override
+    public String toString() {
+        return name + " Bankroll: $" + bankroll;
     }
 
 

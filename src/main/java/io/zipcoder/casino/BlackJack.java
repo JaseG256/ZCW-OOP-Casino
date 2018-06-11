@@ -3,8 +3,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class BlackJack {
+public class BlackJack extends CardGame {
     private ArrayList<Card> playerHand = new ArrayList<Card>();
+    private ArrayList<Card> playerTwoHand = new ArrayList<Card>();
     private ArrayList<Card> dealerHand = new ArrayList<Card>();
     private int currentBet;
     private boolean playingBJ = false;
@@ -15,8 +16,12 @@ public class BlackJack {
     static String name;
     static String choice;
 
-    public BlackJack() {
-        this.player = new Player("Eugene");
+    public BlackJack(Player player) {
+        super(player);
+    }
+
+    public BlackJack(Player player, Player playerTwo) {
+        super(player, playerTwo);
     }
 
     public void start() {
@@ -24,13 +29,13 @@ public class BlackJack {
         this.deck.shuffle();
     }
 
-    private void dealToPlayerHand(int amountOfCards) {
+    public void dealToPlayerHand(int amountOfCards) {
         for (int i = 0; i < amountOfCards; i++) {
             this.playerHand.add(deck.draw());
         }
     }
 
-    private void dealToDealerHand(int amountOfCards) {
+    public void dealToDealerHand(int amountOfCards) {
         for (int i = 0; i < amountOfCards; i++) {
             this.dealerHand.add(deck.draw());
         }
@@ -55,13 +60,17 @@ public class BlackJack {
     }
 
 
-    private int getCurrentBet() {
+    public int getCurrentBet() {
         return this.currentBet;
     }
 
-    private void setCurrentBet(int bet) {
+    public void setCurrentBet(int bet) {
         this.currentBet = bet;
     }
+
+    public void winBet(int winnings) { player.addToBankroll(winnings); }
+
+    public void loseBet(int losings) { player.subtractFromBankroll(losings); }
 
     private void setAskToPlayAgain(boolean bool) {
         this.askToPlayAgain = bool;
@@ -136,6 +145,8 @@ public class BlackJack {
         return totalScore;
     }
 
+    public void endGame() { playingBJ = false; }
+
     public void startGame() {
         start();
         Console.output("Starting BlackJack...");
@@ -145,9 +156,10 @@ public class BlackJack {
                 if (answer.equals("y")) {
                     setPlayingHands(true);
                     setAskToPlayAgain(false);
-                } else {
+                } else if ("n".equalsIgnoreCase(answer)){
                     setPlayingHands(false);
                     setAskToPlayAgain(false);
+                    endGame();
                 }
             }
             while (playingHands) {
@@ -159,11 +171,11 @@ public class BlackJack {
 
                 if (calcHand(dealerHand) == 21) {
                     Console.output("Dealer has BlackJack! You lose!");
-                    player.subtractFromBankroll(currentBet);
+                    loseBet(currentBet);
                     startNextHand();
                 } else if (calcHand(playerHand) == 21) {
                     Console.output("You have BlackJack! You win!");
-                    player.addToBankroll((currentBet * 3) / 2);
+                    winBet(currentBet * 3 / 2);
                     startNextHand();
                 }
 
@@ -215,25 +227,25 @@ public class BlackJack {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("Welcome to Eugene's Casino, where your money is OUR money!");
-        System.out.println("What's your name?");
-        Scanner scan = new Scanner(System.in);
-        Player play = new Player(name);
-       // player.setName(name);
-        System.out.println("Welcome " + name + "! Which game would you like to play?");
-        System.out.println("1: BlackJack");
-        System.out.println("2: Baccarat");
-        System.out.println("3: Craps");
-        choice = scan.nextLine();
-        if (choice.equalsIgnoreCase("1")) {
-            BlackJack bj = new BlackJack();
-            bj.startGame();
-        } else {
-            System.out.println("This game is not available. Please choose again");
-        }
-
-    }
+//    public static void main(String[] args) {
+//        System.out.println("Welcome to Eugene's Casino, where your money is OUR money!");
+//        System.out.println("What's your name?");
+//        Scanner scan = new Scanner(System.in);
+//        Player play = new Player(name);
+//       // player.setName(name);
+//        System.out.println("Welcome " + name + "! Which game would you like to play?");
+//        System.out.println("1: BlackJack");
+//        System.out.println("2: Baccarat");
+//        System.out.println("3: Craps");
+//        choice = scan.nextLine();
+//        if (choice.equalsIgnoreCase("1")) {
+//            BlackJack bj = new BlackJack(player);
+//            bj.startGame();
+//        } else {
+//            System.out.println("This game is not available. Please choose again");
+//        }
+//
+//    }
 }
 
 

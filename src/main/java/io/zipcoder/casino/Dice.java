@@ -1,38 +1,37 @@
 package io.zipcoder.casino;
 
-import java.util.Random;
+    public class Dice {
 
-    public class Dice
-    {
-        private int dice;
-        private Random randomGenerator;
+        private Die[] dies;
+        private int numberOfDice;
 
-        public Dice(int numberOfDice)
-        {
-            dice = numberOfDice;
+        public Dice(int numberOfDice) {
+
+            this.numberOfDice = numberOfDice;
+            dies = new Die[this.numberOfDice];
+
+            for (int i = 0; i < this.numberOfDice; i++) {
+                dies[i] = new Die();
+            }
         }
 
-        public int getSum()
-        {
+        public int getSum() {
+
             int sumOfTosses = 0;
-            for (int i=0; i<dice; i++)
-            {
-                randomGenerator = new Random();
-                int resultOfToss = randomGenerator.nextInt(6)+1;
-                sumOfTosses += resultOfToss;
+            for (Die die : dies) {
+                sumOfTosses += die.toss();
             }
+            Console.output(sumOfTosses);
             return sumOfTosses;
         }
 
-        public int[] getEach()
-        {
-            int[] tosses = new int[dice];
-            for (int i=0; i<dice; i++)
-            {
-                randomGenerator = new Random();
-                tosses[i] = randomGenerator.nextInt(6)+1;
+        @Override
+        public String toString() {
+            String describe = "";
+            for (int i = 0; i < dies.length; i++) {
+                describe = Console.output("Die " + i + dies[i].getValue());
             }
-            return tosses;
+            return describe;
         }
-    }
 
+    }

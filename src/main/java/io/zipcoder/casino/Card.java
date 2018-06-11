@@ -37,13 +37,13 @@ public class Card {
         if (!isPrivate) {
             String describe = "";
             if (suit.equals(Suit.SPADES)) {
-                describe = rank + "\u2660 of " + suit;
+                describe = rank + " of \u2660 "; //+ suit;
             } else if (suit.equals(Suit.CLUBS)) {
-                describe = rank + "\u2663 of " + suit;
+                describe = rank + " of \u2663 "; //+ suit;
             } else if (suit.equals(Suit.DIAMONDS)) {
-                describe = rank + "\u2666 of " + suit;
+                describe = rank + " of \u2666 ";// + suit;
             } else if (suit.equals(Suit.HEARTS)) {
-                describe = rank + "\u2665 of " + suit;
+                describe = rank + " of \u2665 ";// + suit;
             }
             return describe;
         } else {

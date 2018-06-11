@@ -8,7 +8,7 @@ public interface Game {
 
     void endGame();
 
-    void declareWinner();
+//    void declareWinner();
 
 
 }

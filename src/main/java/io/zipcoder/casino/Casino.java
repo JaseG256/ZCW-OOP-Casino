@@ -5,26 +5,42 @@ public class Casino {
 
     private Player player;
     private String choice;
-    private Console console;
-    //GameFactory gf;
+    private String numberOfPlayers;
+    private boolean isPlaying = false;
 
     public void startCasino() {
+
+        System.out.println("Welcome to Eugene's Casino, Where Your Money is OUR Money!");
+
+//        numberOfPlayers = Console.askForInput("How many players?");
+        Player player = new Player();
+        player.setName(Console.askForInput("What is your name?"));
+        Console.output("Hello " + player.getName() + ". Your bankroll is: $" + player.getBankroll());
+
+//        if ("2".equalsIgnoreCase(numberOfPlayers)) {
+//            Player playerTwo = new Player();
+//            playerTwo.setName(Console.askForInput("What is your name, player two?"));
+//        }
+
         do {
-            System.out.println("Welcome to the Zip Code Casino!");
             System.out.println("Which game would you like to play? ");
             System.out.println("1: BlackJack");
             System.out.println("2: Baccarat");
             choice = Console.askForInput("3: Craps");
-            System.out.println(choice);
+            GameFactory.getGame(choice, player);
+            String play = Console.askForInput("Would you like to keep playing in the Casino? Y/N ");
+            Console.output("Your bankroll is $" + player.getBankroll());
 
-            if (choice.equalsIgnoreCase("1")) {
-                BlackJack blackjack = new BlackJack();
-                blackjack.start();
-
+            if ("y".equalsIgnoreCase(play)) {
+                isPlaying = true;
+            } else if ("n".equalsIgnoreCase(play)) {
+                isPlaying = false;
             }
-        } while (false);
 
-        }
+        } while (isPlaying);
+    }
+
+}
 
 
 //    public static void main(String[] args) {
@@ -38,4 +54,3 @@ public class Casino {
 //        Casino cas = new Casino();
 //        cas.startCasino();
 //    }
-}
