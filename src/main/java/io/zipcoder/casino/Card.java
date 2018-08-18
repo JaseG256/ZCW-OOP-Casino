@@ -32,6 +32,22 @@ public class Card {
         this.suit = suit;
     }
 
+
+    class CompareCards implements Comparable<Card>{
+
+        public int compareTo(Card otherCard) {
+            int comparison;
+            if (rank.compareTo(otherCard.getRank()) == 0) {
+                comparison = 0;
+            } else if (rank.compareTo(otherCard.getRank()) < 0) {
+                comparison = -1;
+            } else {
+                comparison = 1;
+            }
+            return comparison;
+        }
+    }
+
     @Override
     public String toString() {
         if (!isPrivate) {

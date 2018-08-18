@@ -2,19 +2,13 @@ package io.zipcoder.casino;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class BlackJack extends CardGame {
-    private ArrayList<Card> playerHand = new ArrayList<Card>();
-    private ArrayList<Card> playerTwoHand = new ArrayList<Card>();
-    private ArrayList<Card> dealerHand = new ArrayList<Card>();
     private int currentBet;
     private boolean playingBJ = false;
     private boolean playingHands = true;
     private boolean askToPlayAgain = false;
-    private CardDeck deck = new CardDeck();
-    private static Player player;
-    static String name;
-    static String choice;
 
     public BlackJack(Player player) {
         super(player);
@@ -94,58 +88,63 @@ public class BlackJack extends CardGame {
         setPlayingHands(false);
     }
 
-    private int getCardValue(Card card) {
-        Rank rank = card.getRank();
-        int calcValue = 0;
-        switch(rank) {
-            case ACE:
-                calcValue = 1;
-                break;
-            case TWO:
-                calcValue = 2;
-                break;
-            case THREE:
-                calcValue = 3;
-                break;
-            case FOUR:
-                calcValue = 4;
-                break;
-            case FIVE:
-                calcValue = 5;
-                break;
-            case SIX:
-                calcValue = 6;
-                break;
-            case SEVEN:
-                calcValue = 7;
-                break;
-            case EIGHT:
-                calcValue = 8;
-                break;
-            case NINE:
-                calcValue = 9;
-                break;
-            case TEN:
-                calcValue = 10;
-                break;
-            case JACK:
-            case QUEEN:
-            case KING:
-                calcValue = 10;
-                break;
-        }
-        return calcValue;
-    }
+
 
     private int calcHand(ArrayList<Card> hand) {
         int totalScore = 0;
+        CardValues cardValues = new CardValues();
         for (int i = 0; i < hand.size(); i++) {
-            totalScore += getCardValue(hand.get(i));
+            totalScore += cardValues.getCardValue(hand.get(i));
         }
         return totalScore;
     }
 
     public void endGame() { playingBJ = false; }
+
+    class CardValues {
+        public int getCardValue(Card card) {
+            Rank rank = card.getRank();
+            int calcValue = 0;
+            switch(rank) {
+                case ACE:
+                    calcValue = 1;
+                    break;
+                case TWO:
+                    calcValue = 2;
+                    break;
+                case THREE:
+                    calcValue = 3;
+                    break;
+                case FOUR:
+                    calcValue = 4;
+                    break;
+                case FIVE:
+                    calcValue = 5;
+                    break;
+                case SIX:
+                    calcValue = 6;
+                    break;
+                case SEVEN:
+                    calcValue = 7;
+                    break;
+                case EIGHT:
+                    calcValue = 8;
+                    break;
+                case NINE:
+                    calcValue = 9;
+                    break;
+                case TEN:
+                    calcValue = 10;
+                    break;
+                case JACK:
+                case QUEEN:
+                case KING:
+                    calcValue = 10;
+                    break;
+            }
+            return calcValue;
+        }
+    }
 
     public void startGame() {
         start();

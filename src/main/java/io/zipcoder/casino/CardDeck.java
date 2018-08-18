@@ -28,11 +28,14 @@ public class CardDeck {
         Collections.shuffle(deck, rand);
     }
 
-    public void deal(int numOfCards) {
+    public Card[] deal(int numOfCards) {
+        Card[] cards = new Card[numOfCards];
         Collections.shuffle(deck, rand);
         for (int i = 0; i < numOfCards; i++) {
+            cards[i] = deck.remove(0);
             System.out.println(deck.remove(0));
         }
+        return cards;
     }
 
     public Card draw() {
